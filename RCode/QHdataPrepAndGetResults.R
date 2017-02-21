@@ -27,7 +27,3 @@ QHdataPrepAndGetResults <- function(X, Y, q, trainPerc = 0.7, SEED = 1305){
     list(confusionMatrix = confusionMatrix,
          timeSpent = timeSpent)
 }
-
-require('mlbench')
-Data <- mlbench::mlbench.xor(n = 100000, d = 2)
-QHdataPrepAndGetResults(X = Data$x, Y = Data$classes, q = 5)
