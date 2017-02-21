@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "require('caret')\nsource('./RCode/callQH.R')\n\n# Example\n# QHdataPrepAndGetResults(X = iris[, 1:4], Y = iris[, 5], q = 4)\n\nQHdataPrepAndGetResults <- function(X, Y, q, trainPerc = 0.7, SEED = 1305){\n    set.seed(SEED)\n    \n    Y <- as.numeric(Y)\n    \n    nObs <- length(Y)\n    trainPos <- sample(nObs, round(trainPerc * nObs))\n    \n    Xtrain <- X[trainPos, ]\n    Xtest <- X[-trainPos, ]\n    \n    Ytrain <- Y[trainPos]\n    Ytest <- Y[-trainPos]\n    \n    resultList <- callQH(Xtrain = Xtrain, Ytrain = Ytrain, q = q, Xtest = Xtest)\n    Ypred <- unlist(resultList[['Ypred']])\n    timeSpent <- resultList[['timeSpent']]\n    \n    confusionMatrix <- caret::confusionMatrix(Ypred, Ytest)\n    \n    list(confusionMatrix = confusionMatrix,\n         timeSpent = timeSpent)\n}\n\nrequire('mlbench')\nData <- mlbench::mlbench.xor(n = 100000, d = 2)\nQHdataPrepAndGetResults(X = Data$x, Y = Data$classes, q = 5)\n",
+    "created" : 1487631586946.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4121997222",
+    "id" : "6B20BA0A",
+    "lastKnownWriteTime" : 1487681697,
+    "last_content_update" : 1487681697082,
+    "path" : "~/Desktop/Facudade/Iniciacao/ArtigoAutomatica/RCode/QHdataPrepAndGetResults.R",
+    "project_path" : "RCode/QHdataPrepAndGetResults.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
