@@ -49,6 +49,8 @@ for (dataSetName in names(DataSets)) {
                                             Accuracy = accuracy,
                                             Kappa = kappa))
         }
-    save.image(file = 'KNNResults')
+    save.image(file = './Results/Partial_KNNResults.RData')
     }
 }
+file.remove(file = './Results/Partial_KNNResults.RData')
+save.image(file = './Results/KNNPredictionResults.RData')

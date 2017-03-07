@@ -22,6 +22,10 @@ class QH:
         key = str(np.floor( ( (obs - self.Min) / self.QSize) ).astype(int))
         return key
 
+    def getRawKey(self, obs):
+        key = np.floor( ( (obs - self.Min) / self.QSize) ).astype(int)
+        return key
+
     def fit(self, X, Y):
         self.nClass = len(set(Y))
         self.nObs = X.shape[0]
@@ -45,6 +49,16 @@ class QH:
                 self.HashTable[key] = np.zeros(self.nClass)
 
             self.HashTable[key][obsClass] += 1
+
+
+    def permgrid(self):
+        inds = np.indices((3,) * self.nFeatures)
+        return inds.reshape(self.nFeatures, -1).T - 1
+
+    def BFS(self, Obs):
+        key = self.getRawKey(obs)
+        allNeighbourKeys = permgrid(key)
+        return allNeighbourKeys
 
 
     def predict(self, X, mode = 'prob'):
