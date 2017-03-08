@@ -1,4 +1,4 @@
-callQH <- function(Xtrain, Ytrain, q, Xtest){
+callKNN <- function(Xtrain, Ytrain, K, Xtest){
     if(!dir.exists('./data')) dir.create('./data')
     
     if(file.exists('data/auxXtrain.csv')) file.remove('data/auxXtrain.csv')
@@ -11,10 +11,10 @@ callQH <- function(Xtrain, Ytrain, q, Xtest){
     write.csv(x = Xtest, file = 'data/auxXtest.csv', row.names = FALSE)
     
     shellCommand <- paste('python',
-                          './pythonCode/QHShellScript.py',
+                          './pythonCode/KNNShellScript.py',
                           './data/auxXtrain.csv',
                           './data/auxYtrain.csv',
-                          q,
+                          K,
                           './data/auxXtest.csv',
                           './data/auxYpred.csv',
                           sep = ' ')
@@ -32,7 +32,7 @@ callQH <- function(Xtrain, Ytrain, q, Xtest){
     
     trainningTime <- timeTable[1,1]
     testingTime <- timeTable[1,2]
-    
+        
     list(Ypred = Ypred,
          trainningTime = trainningTime,
          testingTime = testingTime)

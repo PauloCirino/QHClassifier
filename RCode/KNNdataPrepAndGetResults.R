@@ -1,10 +1,10 @@
 require('caret')
-source('./RCode/callQH.R')
+source('./RCode/callKNN.R')
 
 # Example
-# QHdataPrepAndGetResults(X = iris[, 1:4], Y = iris[, 5], q = 2)
+# KNNdataPrepAndGetResults(X = iris[, 1:4], Y = iris[, 5], K = 4)
 
-QHdataPrepAndGetResults <- function(X, Y, q, trainPerc = 0.7, SEED = 1305){
+KNNdataPrepAndGetResults <- function(X, Y, K, trainPerc = 0.7, SEED = 1305){
     set.seed(SEED)
     
     Y <- as.numeric(Y)
@@ -18,7 +18,7 @@ QHdataPrepAndGetResults <- function(X, Y, q, trainPerc = 0.7, SEED = 1305){
     Ytrain <- Y[trainPos]
     Ytest <- Y[-trainPos]
     
-    resultList <- callQH(Xtrain = Xtrain, Ytrain = Ytrain, q = q, Xtest = Xtest)
+    resultList <- callKNN(Xtrain = Xtrain, Ytrain = Ytrain, K = K, Xtest = Xtest)
     Ypred <- unlist(resultList[['Ypred']])
     trainningTime <- resultList[['trainningTime']]
     testingTime <- resultList[['testingTime']]

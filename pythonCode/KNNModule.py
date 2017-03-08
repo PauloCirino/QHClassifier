@@ -8,7 +8,7 @@ class KNN:
         self.Ytrain = Y
     
     def predict(self, X, K):
-        yPred = np.zeros(Y.shape[0])
+        yPred = np.zeros(X.shape[0])
         
         for i in range(X.shape[0]):
             xTest = X[i, :]

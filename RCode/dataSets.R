@@ -6,7 +6,7 @@ require('dplyr')
 DataSets <- list()
 
 set.seed(123)
-auxDf <- mlbench::mlbench.2dnormals(n = 100000)
+auxDf <- mlbench::mlbench.2dnormals(n = 10000)
 DataSets[['2Nroms']] <-
     list(X = auxDf$x %>%
              data.matrix() %>% scale(),
@@ -14,7 +14,7 @@ DataSets[['2Nroms']] <-
 ################################################################################
 
 set.seed(123)
-auxDf <- mlbench::mlbench.spirals(n = 100000, cycles = 3, sd = 0.06)
+auxDf <- mlbench::mlbench.spirals(n = 10000, cycles = 3, sd = 0.06)
 DataSets[['Spirals']] <-
     list(X = auxDf$x %>%
              data.matrix() %>% scale(),
