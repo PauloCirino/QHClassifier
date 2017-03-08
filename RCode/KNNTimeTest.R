@@ -30,12 +30,12 @@ for(dataSet in dataSetNames){
                                                    SEED = iter)
                 
                 cat(paste(Sys.time(), '\n',
-                          'Iter ' = iter,
-                          'DataSet ' = dataSet,
-                          'NumDims ' = nDims,
-                          'NumPoints ' = nPoints,
-                          'trainningTime ' = Result$trainningTime,
-                          'testingTime ' = Result$testingTime,
+                          'Iter = ', iter, '\t',
+                          'DataSet = ', dataSet, '\t',
+                          'NumDims = ', nDims, '\t',
+                          'NumPoints = ', nPoints, '\n',
+                          'trainningTime = ', Result$trainningTime, '\t',
+                          'testingTime = ', Result$testingTime,
                           '\n', sep = ''))
                 
                 resultTable <- resultTable %>%
