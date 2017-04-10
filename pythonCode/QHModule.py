@@ -37,7 +37,7 @@ class QH:
                                         axis = 0)
     
         self.Min = X.min(0) - 1e-8
-        self.Max = X.max(0) + 1e-8
+        self.Max = X.max(0) + 3e-8
 
         self.minY = min(Y)
 
@@ -78,7 +78,7 @@ class QH:
                 newActiveKeys = np.zeros((2 *  self.nFeatures * activeRawKeys.shape[0], self.nFeatures))
                 for i in range(activeRawKeys.shape[0]):
                     newActiveKeys[range((i)*(2*self.nFeatures), (i+1)*(2*self.nFeatures)), :] =  self.getAllRawNeighbourKeys(activeRawKeys[i, :])
-                activeRawKeys = newActiveKeys
+                activeRawKeys = newActiveKeys.astype(int)
         return Ypred
 
 
@@ -93,7 +93,8 @@ class QH:
             x = X[i, :]
             key = self.getKey(x)
             if key not in self.HashTable :
-                Y[i] = self.BFS(x)
+                #Y[i] = self.BFS(x)
+                Y[i] = 1
             else :
                 Y[i] = self.HashTable[key] / np.sum(self.HashTable[key])
 

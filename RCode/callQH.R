@@ -1,4 +1,4 @@
-callQH <- function(Xtrain, Ytrain, q, Xtest){
+callQH <- function(Xtrain, Ytrain, q, Xtest, qhMode = 'class'){
     if(!dir.exists('./data')) dir.create('./data')
     
     if(file.exists('data/auxXtrain.csv')) file.remove('data/auxXtrain.csv')
@@ -17,6 +17,7 @@ callQH <- function(Xtrain, Ytrain, q, Xtest){
                           q,
                           './data/auxXtest.csv',
                           './data/auxYpred.csv',
+                          qhMode,
                           sep = ' ')
     
     TimeSpent <- system(command = shellCommand)

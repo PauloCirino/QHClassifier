@@ -5,14 +5,22 @@ require('dplyr')
 require('Metrics')
 
 trainPerc <- 0.7
-Ks <- c(1, 3, 5, 7, 9)
+Ks <- c(1,3,5,7)
 nFolds <- 10
+nPoints <- 50000
 
-results <- data.frame()
+DataSets <- list() 
+DataSets$XOR <- mlbench::mlbench.xor(n = nPoints)
+DataSets$Circle <- mlbench::mlbench.circle(n = nPoints)
+DataSets$Normals2D <- mlbench::mlbench.2dnormals(n = nPoints)
+DataSets$Cassini <- mlbench::mlbench.cassini(n = nPoints)
+
+
+Results <- data.frame()
 for (dataSetName in names(DataSets)) {
     Data <- DataSets[[dataSetName]]
-    X <- Data$X
-    Y <- Data$Y %>% as.factor()
+    X <- Data$x 
+    Y <- Data$classes %>% as.factor()
     for (K in Ks) {
         for (fold in 1:nFolds) {
             print(Sys.time())
@@ -42,7 +50,7 @@ for (dataSetName in names(DataSets)) {
             results <- caret::confusionMatrix(data = YPred, reference = YTest)
             accuracy <- round( 100 * results$overall['Accuracy'], 2)
             kappa <- round(results$overall['Kappa'], 4)
-            results <- results %>%
+            Results <- Results %>%
                 dplyr::bind_rows(data.frame(DataSet = dataSetName,
                                             K = K,
                                             fold = fold,
