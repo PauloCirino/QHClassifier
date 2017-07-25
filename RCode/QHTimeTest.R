@@ -6,15 +6,18 @@ source('./RCode/QHdataPrepAndGetResults.R')
 
 dataSetNames <- artificialDataSetNDimsGetNames()
 
-numIter <- 10
+numIter <- 3
 Qs <- c(2, 3, 4, 5, 6, 7)
 
-numTrainpoints <- c(500, 1000, 3000, 5000, 7000, 9000, 11000, 13000, 15000)
-numDims <- c(2)
+numTrainpoints <- c(500, 1000, 3000, 5000, 7000, 9000, 11000, 13000, 15000, 25000, 50000)
+numDims <- c(2, 4, 8, 16)
 trainRatio <- 0.5
 numPoints <- round(numTrainpoints / trainRatio)
 
-resultTable <- data.frame()
+lastCheckPointTS <- 0
+saveEachNSec <- 600
+
+resultTableQH <- data.frame()
 for(dataSet in dataSetNames){
     for(nDims in numDims){
         for(iter in 1:numIter){
@@ -38,7 +41,7 @@ for(dataSet in dataSetNames){
                               'testingTime = ', Result$testingTime,
                               '\n', sep = ''))
                     
-                    resultTable <- resultTable %>%
+                    resultTableQHQH <- resultTableQH %>%
                         dplyr::bind_rows(data.frame(Iter = iter,
                                                     DataSet = dataSet,
                                                     NumDims = nDims,
@@ -47,7 +50,10 @@ for(dataSet in dataSetNames){
                                                     testingTime = Result$testingTime 
                         ))
                     
-                    save.image('./Results/partialQHTimeResults.RData')
+                    if( (as.numeric( Sys.time() ) - lastCheckPointTS) > saveEachNSec ){
+                        lastCheckPointTS <- as.numeric(Sys.time())
+                        save.image('./Results/partialQHTimeResults.RData')
+                    }
                 }
             }  
         }

@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.spatial import distance
+from scipy.spatial.distance import cdist
 from scipy.stats import mode
 
 class KNN:
@@ -11,15 +11,9 @@ class KNN:
         yPred = np.zeros(X.shape[0])
         
         for i in range(X.shape[0]):
-            xTest = X[i, :]
-            Dist = np.zeros(self.Xtrain.shape[0])
-            
-            for j in range(self.Xtrain.shape[0]):
-                xTrain = self.Xtrain[j, :]
-                Dist[j] = distance.euclidean(xTrain, xTest)
-            
-            kPos = Dist.argsort()[:K]
-            
+            xTest = np.array([X[i, :]])
+            Dist = cdist(xTest, self.Xtrain)
+            kPos = (Dist.argsort()[0, ])[:K]
             yPred[i] = mode(self.Ytrain[kPos])[0][0]
         
         return yPred
