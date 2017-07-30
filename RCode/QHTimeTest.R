@@ -4,13 +4,14 @@ require('mlbench')
 source('./RCode/artificialDataSetsNDims.R')
 source('./RCode/QHdataPrepAndGetResults.R')
 
-dataSetNames <- artificialDataSetNDimsGetNames()
+#dataSetNames <- artificialDataSetNDimsGetNames()
+dataSetNames <- c('Cassini', 'Normals2D', 'Smiley', 'Spirals', 'XOR')
 
-numIter <- 3
+numIter <- 5
 Qs <- c(2, 3, 4, 5, 6, 7)
 
-numTrainpoints <- c(500, 1000, 3000, 5000, 7000, 9000, 11000, 13000, 15000, 25000, 50000)
-numDims <- c(2, 4, 8, 16)
+numTrainpoints <- c(500, 1000, 2500, 5000, 10000, 20000, 30000, 40000, 50000)
+numDims <- 2
 trainRatio <- 0.5
 numPoints <- round(numTrainpoints / trainRatio)
 
@@ -34,6 +35,8 @@ for(dataSet in dataSetNames){
                     
                     cat(paste(Sys.time(), '\n',
                               'Iter = ', iter, '\t',
+                              'Method =', 'QH', '\t',
+                              'Param =', Q, '\t',
                               'DataSet = ', dataSet, '\t',
                               'NumDims = ', nDims, '\t',
                               'NumPoints = ', nPoints, '\n',
@@ -41,18 +44,21 @@ for(dataSet in dataSetNames){
                               'testingTime = ', Result$testingTime,
                               '\n', sep = ''))
                     
-                    resultTableQHQH <- resultTableQH %>%
+                    resultTableQH <- resultTableQH %>%
                         dplyr::bind_rows(data.frame(Iter = iter,
+                                                    Method = 'QH',
+                                                    Param = Q,
                                                     DataSet = dataSet,
                                                     NumDims = nDims,
                                                     NumPoints = nPoints,
                                                     trainningTime = Result$trainningTime,
-                                                    testingTime = Result$testingTime 
+                                                    testingTime = Result$testingTime
                         ))
                     
                     if( (as.numeric( Sys.time() ) - lastCheckPointTS) > saveEachNSec ){
                         lastCheckPointTS <- as.numeric(Sys.time())
-                        save.image('./Results/partialQHTimeResults.RData')
+                        saveRDS(object = resultTableQH,
+                                file = './Results/partialQHTimeResults.rds')
                     }
                 }
             }  
@@ -60,4 +66,5 @@ for(dataSet in dataSetNames){
     }
 }
 
-save.image('./Results/QHTimeResults.RData')
+saveRDS(object = resultTableQH,
+        file = './Results/QHTimeResults.rds')

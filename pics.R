@@ -24,7 +24,7 @@ ggplot2::ggplot(data = auxData,
                     axis.line = element_line(colour = "white")) +
     ggplot2::scale_x_continuous(name = 'X') + 
     ggplot2::scale_y_continuous(name = 'Y') +
-    ggplot2::ggsave(filename = './pics/data.png',
+    ggplot2::ggsave(filename = './pics/data.eps', device = 'eps',
                     width = 8, height = 8)
 
 ################################################################################
@@ -48,7 +48,7 @@ ggplot2::ggplot(data = auxData,
     ggplot2::scale_y_continuous(minor_breaks = seq(-1, 1, 0.25),
                                 breaks = seq(-1, 1, 0.5),
                                 name = 'Y') +
-    ggplot2::ggsave(filename = './pics/grid.png',
+    ggplot2::ggsave(filename = './pics/grid.eps', device = 'eps',
                     width = 8, height = 8)
 
 ################################################################################
@@ -74,7 +74,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, fill = Class)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataClass2.png',
+    ggplot2::ggsave(filename = './pics/dataClass2.eps', device = 'eps',
                     width = 8, height = 8)
 
 
@@ -92,7 +92,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, fill = Class)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataClass3.png',
+    ggplot2::ggsave(filename = './pics/dataClass3.eps', device = 'eps',
                     width = 8, height = 8)
 
 result <- callQH(Xtrain = X, Ytrain = Y, q = 4, Xtest = Xtest,
@@ -109,7 +109,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, fill = Class)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataClass4.png',
+    ggplot2::ggsave(filename = './pics/dataClass4.eps', device = 'eps',
                     width = 8, height = 8)
 
 result <- callQH(Xtrain = X, Ytrain = Y, q = 5, Xtest = Xtest,
@@ -126,7 +126,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, fill = Class)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataClass5.png',
+    ggplot2::ggsave(filename = './pics/dataClass5.eps', device = 'eps',
                     width = 8, height = 8)
 
 
@@ -158,7 +158,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, z = Y, fill = Y)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataProb1.png',
+    ggplot2::ggsave(filename = './pics/dataProb1.eps', device = 'eps',
                     width = 8, height = 8)
 
 
@@ -180,7 +180,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, z = Y, fill = Y)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataProb2.png',
+    ggplot2::ggsave(filename = './pics/dataProb2.eps', device = 'eps',
                     width = 8, height = 8)
 
 
@@ -202,7 +202,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, z = Y, fill = Y)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataProb3.png',
+    ggplot2::ggsave(filename = './pics/dataProb3.eps', device = 'eps',
                     width = 8, height = 8)
 
 
@@ -224,7 +224,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, z = Y, fill = Y)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataProb4.png',
+    ggplot2::ggsave(filename = './pics/dataProb4.eps', device = 'eps',
                     width = 8, height = 8)
 
 
@@ -246,7 +246,7 @@ ggplot2::ggplot(data = resultDF, aes(x = X1, y = X2, z = Y, fill = Y)) +
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     axis.line = element_line(colour = "white")) +
-    ggplot2::ggsave(filename = './pics/dataProb5.png',
+    ggplot2::ggsave(filename = './pics/dataProb5.eps', device = 'eps',
                     width = 8, height = 8)
 
 ################################################################################
@@ -296,3 +296,121 @@ xtable::xtable(endTableDF)
 ################################################################################
 ################################################################################
 ################################################################################
+
+
+require('dplyr')
+require('ggplot2')
+
+KNNTimeTable <- readRDS('Results/KNNTimeResults.rds')
+QHTImeTable <- readRDS('Results/QHTimeResults.rds')
+
+timeTable <- dplyr::bind_rows(KNNTimeTable, QHTImeTable) %>%
+    dplyr::mutate(totalTime = trainningTime + testingTime)
+
+timeTable %>%
+    dplyr::filter(NumDims == 16, DataSet == 'Circle') %>%
+    dplyr::mutate(Method = paste(Method, Param)) %>%
+    dplyr::group_by(NumPoints, Method) %>%
+    dplyr::summarise(trainningTime = mean(trainningTime),
+                     testingTime = mean(testingTime),
+                     totalTime = mean(totalTime)) %>%
+    ggplot2::ggplot(aes(x = NumPoints,
+                        y = totalTime,
+                        color = Method) ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::theme_bw() +
+    ggplot2::xlab('Número de Pontos') +
+    ggplot2::ylab('Tempo Total - Segundos')
+
+knnTable <- timeTable %>%
+    dplyr::filter(Method == 'KNN') %>% 
+    dplyr::filter(NumDims == 16, DataSet == 'Circle') %>%
+    dplyr::summarise(trainningTime = mean(trainningTime),
+                     testingTime = mean(testingTime),
+                     totalTime = mean(totalTime)) 
+
+timeTable %>%
+    dplyr::filter(NumDims == 16, DataSet == 'Circle', Method != 'KNN') %>%
+    dplyr::mutate(Method = paste(Method, Param)) %>%
+    dplyr::group_by(NumPoints, Method) %>%
+    dplyr::summarise(trainningTime = mean(trainningTime),
+                     testingTime = mean(testingTime),
+                     totalTime = mean(totalTime)) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(totalTime = totalTime / knnTable$totalTime) %>%
+    ggplot2::ggplot(aes(x = NumPoints,
+                        y = totalTime,
+                        color = Method) ) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::theme_bw() +
+    ggplot2::xlab('Número de Pontos') +
+    ggplot2::ylab('Tempo Total - Segundos')
+
+
+timeTable %>%
+    dplyr::filter(NumPoints == 1e+04, DataSet == 'Circle') %>%
+    dplyr::mutate(Method = paste(Method, Param)) %>%
+    dplyr::group_by(NumDims, Method) %>%
+    dplyr::summarise(trainningTime = mean(trainningTime),
+                     testingTime = mean(testingTime),
+                     totalTime = mean(totalTime)) %>%
+    ggplot2::ggplot(aes(x = NumDims,
+                        y = totalTime,
+                        color = Method)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::theme_bw()
+
+
+
+timeTable %>%
+    dplyr::filter(NumDims == 2, DataSet == 'Circle', Method == 'QH') %>%
+    dplyr::mutate(Method = paste(Method, Param)) %>%
+    dplyr::group_by(NumPoints, Method) %>%
+    dplyr::summarise(trainningTime = mean(trainningTime),
+                     testingTime = mean(testingTime),
+                     totalTime = mean(totalTime)) %>%
+    ggplot2::ggplot(aes(x = NumPoints,
+                        y = totalTime,
+                        color = Method) ) +
+    ggplot2::scale_y_log10() +
+    ggplot2::geom_line() + 
+    ggplot2::geom_point() +
+    ggplot2::theme_bw() 
+
+
+auxTable <- timeTable %>%
+    dplyr::mutate(Method = paste(Method, Param)) %>%
+    dplyr::group_by(NumPoints, NumDims, Method) %>%
+    dplyr::summarise(trainningTime = mean(trainningTime),
+                     testingTime = mean(testingTime),
+                     totalTime = mean(totalTime))
+
+#### Teste Anova
+auxDataQH <- readRDS(file = './Results/QHAccuracyResults.rds') %>%
+    dplyr::filter( ! (Q %in% 1 )) %>%
+    dplyr::mutate(Param = Q, Method = 'QH') %>%
+    dplyr::group_by(DataSet, Method, Param) %>%
+    dplyr::summarise(medAccuracy = median(Accuracy),
+                     meanAccuracy = mean(Accuracy)) %>%
+    dplyr::ungroup() %>%
+    data.frame()
+
+auxDataKNN <- readRDS(file = './Results/KNNAcurracyResults.rds') %>%
+    dplyr::mutate(Param = K, Method = 'KNN') %>%
+    dplyr::group_by(DataSet, Method, Param) %>%
+    dplyr::summarise(medAccuracy = median(Accuracy),
+                     meanAccuracy = mean(Accuracy)) %>%
+    dplyr::ungroup() %>%
+    data.frame()
+
+accuracyResults <- dplyr::bind_rows(auxDataKNN, auxDataQH) %>%
+    dplyr::select(-medAccuracy) %>%
+    dplyr::mutate(Param = paste(Method, Param, sep = '-'))
+
+aov(formula = as.numeric(meanAccuracy) ~ factor(DataSet) + factor(Method) + factor(Param), 
+    data = accuracyResults) %>%
+    summary() %>%
+    xtable()

@@ -6,10 +6,10 @@ source('./RCode/KNNdataPrepAndGetResults.R')
 
 dataSetNames <- artificialDataSetNDimsGetNames()
 
-numIter <- 3
+numIter <- 5
 Ks <- c(3)
 
-numTrainpoints <- c(500, 1000, 3000, 5000, 7000, 9000, 11000, 13000, 15000, 25000, 50000)
+numTrainpoints <- c(500, 1000, 2500, 5000, 10000, 20000, 30000, 40000, 50000)
 numDims <- c(2, 4, 8, 16)
 trainRatio <- 0.5
 numPoints <- round(numTrainpoints / trainRatio)
@@ -34,6 +34,8 @@ for(dataSet in dataSetNames){
                     
                     cat(paste(Sys.time(), '\n',
                               'Iter = ', iter, '\t',
+                              'Method =', 'KNN', '\t',
+                              'Param =', K, '\t',
                               'DataSet = ', dataSet, '\t',
                               'NumDims = ', nDims, '\t',
                               'NumPoints = ', nPoints, '\n',
@@ -43,6 +45,8 @@ for(dataSet in dataSetNames){
                     
                     resultTableKNN <- resultTableKNN %>%
                         dplyr::bind_rows(data.frame(Iter = iter,
+                                                    Method = 'KNN',
+                                                    Param = K, 
                                                     DataSet = dataSet,
                                                     NumDims = nDims,
                                                     NumPoints = nPoints,
@@ -52,7 +56,8 @@ for(dataSet in dataSetNames){
                     
                     if( (as.numeric( Sys.time() ) - lastCheckPointTS) > saveEachNSec ){
                         lastCheckPointTS <- as.numeric(Sys.time())
-                        save.image('./Results/partialKNNTimeResults.RData')
+                        saveRDS(object = resultTableKNN,
+                                file = './Results/partialKNNTimeResults.rds')
                     }
                 }
             }  
@@ -60,4 +65,5 @@ for(dataSet in dataSetNames){
     }
 }
 
-save.image('./Results/KNNTimeResults.RData')
+saveRDS(object = resultTableKNN,
+        file = './Results/KNNTimeResults.rds')
